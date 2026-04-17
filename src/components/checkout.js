@@ -1,18 +1,144 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  animation: ${fadeIn} 0.5s ease-out forwards;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 2rem;
+  text-align: center;
+`;
+
+const FormBox = styled.div`
+  background: ${({ theme }) => theme.colors.surface};
+  padding: 3rem;
+  border-radius: ${({ theme }) => theme.borderRadius.large};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
+  border: 1px solid rgba(0,0,0,0.03);
+`;
+
+const SectionTitle = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: ${({ theme }) => theme.colors.primary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding-bottom: 0.5rem;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const Label = styled.label`
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.textLight};
+  margin-bottom: 0.5rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0,0,0,0.02);
+  border: 1px solid transparent;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  transition: all ${({ theme }) => theme.transitions.fast};
+
+  &:focus {
+    background: ${({ theme }) => theme.colors.surface};
+    border-color: ${({ theme }) => theme.colors.accent};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accent}20;
+    outline: none;
+  }
+
+  ${({ $invalid, theme }) => $invalid && `
+    border-color: ${theme.colors.danger};
+    background: ${theme.colors.surface};
+    &:focus { box-shadow: 0 0 0 3px ${theme.colors.danger}20; }
+  `}
+`;
+
+const CheckboxWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+
+  input {
+    accent-color: ${({ theme }) => theme.colors.accent};
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  label {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;
+
+const ActionRow = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+`;
+
+const Button = styled.button`
+  flex: 1;
+  padding: 1rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all ${({ theme }) => theme.transitions.smooth};
+`;
+
+const PrimaryBtn = styled(Button)`
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.surface};
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.primaryHover};
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const SecondaryBtn = styled(Button)`
+  background: rgba(0,0,0,0.05);
+  color: ${({ theme }) => theme.colors.text};
+
+  &:hover {
+    background: rgba(0,0,0,0.1);
+  }
+`;
 
 const Checkout = () => {
-
     const [form, setForm] = useState({
         name: '',
         email: '',
         shippingAddress1: '',
-        touched: {
-            name: false,
-            email: false,
-            shippingAddress1: false
-        }
+        touched: { name: false, email: false, shippingAddress1: false }
     });
 
     const navigate = useNavigate();
@@ -27,13 +153,18 @@ const Checkout = () => {
 
     const handleChange = (ev) => {
         const { name, value } = ev.target;
-        setForm((prevState) => {
-            return {
-                ...prevState,
-                [name]: value
-            }
-        });
+        setForm(prev => ({ ...prev, [name]: value }));
     }
+
+    const handleBlur = (ev) => {
+        const { name } = ev.target;
+        setForm(prev => ({
+            ...prev,
+            touched: { ...prev.touched, [name]: true }
+        }));
+    }
+
+    const showError = field => errors[field] ? form.touched[field] : false;
 
     const handleSubmit = (ev) => {
         if (disabled) {
@@ -43,176 +174,70 @@ const Checkout = () => {
         navigate('/orderconfirmation');
     }
 
-    const handleBlur = (ev) => {
-        const { name, value } = ev.target;
-        setForm((prevState) => {
-            return {
-                ...prevState,
-                touched: { ...form.touched, [name]: true }
-            }
-        });
-    }
-
-    const showError = field => errors[field] ? form.touched[field] : false;
-
     return (
-        <form onSubmit={handleSubmit}>
-            <CheckoutContainer>
-                {/* Row 1 */}
-                <CheckoutTitle>Shopping Checkout</CheckoutTitle>
-
-                {/* Row 4 */}
-                <CheckoutHeader>
-                    <h4>Your Details</h4>
-                </CheckoutHeader>
-
-                {/* Row 5 */}
-                <CheckoutHeaderLine />
-
-                {/* Row 6 */}
-                <CheckoutTable>
-                    <CheckoutFormLabel>Name *</CheckoutFormLabel>
-                    <CheckoutInput
-                        type="text"
-                        name="name"
-                        invalid={showError("name")}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        placeholder="Enter name"
-                    />
-                    <CheckoutFormLabel>Email *</CheckoutFormLabel>
-                    <CheckoutInput
-                        type="text"
-                        name="email"
-                        invalid={showError("email")}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        placeholder="Enter email"
-                    />
-                </CheckoutTable>
-
-                {/* Row 7 */}
-                <CheckoutHeader>
-                    <h4>Address Details</h4>
-                </CheckoutHeader>
-
-                {/* Row 8 */}
-                <CheckoutHeaderLine />
-
-                {/* Row 9 */}
-                <CheckoutTable>
-                    <CheckoutFormLabel>To shipping</CheckoutFormLabel>
-                    <CheckoutFormCheckbox type="checkbox" />
-
-                    <CheckoutFormLabel>Billing Address</CheckoutFormLabel>
-
-                    <CheckoutAddress>
-                        <input
+        <Container>
+            <Title>Secure Checkout</Title>
+            <form onSubmit={handleSubmit}>
+                <FormBox>
+                    <SectionTitle>Contact Details</SectionTitle>
+                    <FormGroup>
+                        <Label>Full Name</Label>
+                        <Input
                             type="text"
-                            name="billingAddress1"
+                            name="name"
+                            $invalid={showError("name")}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="John Doe"
                         />
-                        <input type="text" name="billingAddress2" />
-                        <input type="text" name="billingCity" />
-                    </CheckoutAddress>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Email Address</Label>
+                        <Input
+                            type="email"
+                            name="email"
+                            $invalid={showError("email")}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="john@example.com"
+                        />
+                    </FormGroup>
 
-                    <CheckoutFormLabel>Shipping Address *</CheckoutFormLabel>
+                    <SectionTitle style={{marginTop: '3rem'}}>Shipping</SectionTitle>
+                    <CheckboxWrap>
+                        <input type="checkbox" id="sameBilling" defaultChecked />
+                        <label htmlFor="sameBilling">Billing address is same as shipping</label>
+                    </CheckboxWrap>
 
-                    <CheckoutAddress>
-                        <CheckoutInput
+                    <FormGroup>
+                        <Label>Address Line 1</Label>
+                        <Input
                             type="text"
                             name="shippingAddress1"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            invalid={showError("shippingAddress1")}
-                            placeholder="Enter first address line"
+                            $invalid={showError("shippingAddress1")}
+                            placeholder="123 Standard Way"
                         />
-                        <input type="text" name="shippingAddress2" />
-                        <input type="text" name="shippingCity" />
-                    </CheckoutAddress>
-                </CheckoutTable>
+                    </FormGroup>
 
-                <CancelButton onClick={() => navigate("/basket")}>
-                    Cancel
-                </CancelButton>
+                    <FormGroup>
+                        <Label>City</Label>
+                        <Input type="text" name="shippingCity" placeholder="London" />
+                    </FormGroup>
 
-                <CheckoutButton disabled={disabled}>
-                    Confirm Order
-                </CheckoutButton>
-            </CheckoutContainer>
-        </form>
+                    <ActionRow>
+                        <SecondaryBtn type="button" onClick={() => navigate("/basket")}>
+                            Back to Cart
+                        </SecondaryBtn>
+                        <PrimaryBtn type="submit" disabled={disabled}>
+                            Place Order
+                        </PrimaryBtn>
+                    </ActionRow>
+                </FormBox>
+            </form>
+        </Container>
     )
 }
 
 export default Checkout;
-
-const CheckoutContainer = styled.div`
-    display: grid;
-    padding: 20px;
-    grid-template-rows: 0.25fr 1fr 0.25fr 0.25fr 0.25fr 0.5fr;
-    grid-template-columns: 0.1fr 1fr 0.1fr;
-`;
-const CheckoutTable = styled.div`
-    grid-column: 1 / span 3;
-
-    display: grid;
-    grid-template-rows: 0.25fr 0.25fr 0.25fr 0.25fr;
-    grid-template-columns: 0.1fr 0.4fr 0.1fr 0.4fr;
-    column-gap: 20px;
-    padding-left: 10px;
-`;
-
-const CheckoutHeader = styled.div`
-    grid-column: 1 / span 3;
-    padding-top: 20px;
-`;
-const CheckoutHeaderLine = styled.hr`
-    grid-column: 1 / span 3;
-    margin-bottom: 20px;
-    border: 1px solid gray;
-`;
-const CheckoutTitle = styled.h2`
-    grid-column: 1 / span 2;
-    padding-bottom: 20px;
-`;
-
-const CheckoutAddress = styled.div`
-    display: grid;
-
-    grid-template-rows: 0.25fr 0.25fr 0.25fr 0.25fr;
-    grid-template-columns: 1fr;
-    grid-row-gap: 10px;
-`;
-
-const CheckoutFormLabel = styled.label`
-    justify-self: end;
-`;
-
-const CheckoutInput = styled.input`
-    border-width: 1px;
-    border-style: solid;
-
-    ${(props) =>
-        props.invalid &&
-        `
-        border-color: red;
-        border-width: 3px;
-    `}
-`;
-
-const CheckoutFormCheckbox = styled.input`
-    grid-column: 2 / span 3;
-    justify-self: start;
-    margin-bottom: 20px;
-`;
-
-const CheckoutButton = styled.button`
-    border-radius: 8px;
-    height: 40px;
-    grid-column: 3;
-`;
-
-const CancelButton = styled.button`
-    border-radius: 8px;
-    height: 40px;
-    grid-column: 1;
-`;

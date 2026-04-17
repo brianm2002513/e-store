@@ -19,7 +19,7 @@ export const CartReducer = (state, action) => {
       if (index === -1) {
         newItems.push({ ...action.payload, quantity: 1 });
       } else {
-        newItems[index].quantity++;
+        newItems[index] = { ...newItems[index], quantity: newItems[index].quantity + 1 };
       }
       break;
 
@@ -32,8 +32,9 @@ export const CartReducer = (state, action) => {
 
     case "DECQTY":
       if (index > -1) {
-        if (newItems[index].quantity > 1)
-          newItems[index].quantity--;
+        if (newItems[index].quantity > 1) {
+          newItems[index] = { ...newItems[index], quantity: newItems[index].quantity - 1 };
+        }
       }
       break;
 
@@ -44,8 +45,6 @@ export const CartReducer = (state, action) => {
     default:
   }
 
-  state.cartItems = newItems;
   Storage(newItems);
-
-  return state;
+  return { ...state, cartItems: newItems };
 }

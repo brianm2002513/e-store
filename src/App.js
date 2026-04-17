@@ -1,4 +1,6 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { theme, GlobalStyle } from './GlobalStyles';
 import './App.css';
 import { getCategories } from './fetcher';
 import ProductDetail from './components/productDetail';
@@ -24,7 +26,8 @@ function App() {
   }, [])
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout categories={categories} />}>
@@ -38,7 +41,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 
 }
