@@ -181,8 +181,9 @@ const Checkout = () => {
                 <FormBox>
                     <SectionTitle>Contact Details</SectionTitle>
                     <FormGroup>
-                        <Label>Full Name</Label>
+                        <Label htmlFor="name">Full Name</Label>
                         <Input
+                            id="name"
                             type="text"
                             name="name"
                             $invalid={showError("name")}
@@ -192,8 +193,9 @@ const Checkout = () => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Email Address</Label>
+                        <Label htmlFor="email">Email Address</Label>
                         <Input
+                            id="email"
                             type="email"
                             name="email"
                             $invalid={showError("email")}
@@ -210,8 +212,9 @@ const Checkout = () => {
                     </CheckboxWrap>
 
                     <FormGroup>
-                        <Label>Address Line 1</Label>
+                        <Label htmlFor="shippingAddress1">Address Line 1</Label>
                         <Input
+                            id="shippingAddress1"
                             type="text"
                             name="shippingAddress1"
                             onChange={handleChange}

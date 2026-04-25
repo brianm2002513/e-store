@@ -54,9 +54,9 @@ const Category = () => {
       <CategoryHeader>
         <h2>Collection</h2>
       </CategoryHeader>
-      
+
       {products.errorMessage && <div>Error: {products.errorMessage}</div>}
-      
+
       <ProductGrid>
         {products.data && renderProducts()}
       </ProductGrid>

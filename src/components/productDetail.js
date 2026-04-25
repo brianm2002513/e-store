@@ -189,7 +189,9 @@ const ProductDetail = () => {
     return { __html: p?.description };
   }
 
-  if (!p || Object.keys(p).length === 0) return null;
+  if (product.errorMessage) return <div data-testid="error">Error: {product.errorMessage}</div>;
+
+  if (!p || Object.keys(p).length === 0) return <div data-testid="loading">Loading...</div>;
 
   return (
     <PageContainer>
@@ -200,16 +202,16 @@ const ProductDetail = () => {
       </ImageSection>
 
       <InfoSection>
-        {p.stock > 0 ? <Badge>In Stock ({p.stock})</Badge> : <Badge style={{background: '#ffebee', color: '#d32f2f'}}>Out of Stock</Badge>}
-        
+        {p.stock > 0 ? <Badge>In Stock ({p.stock})</Badge> : <Badge style={{ background: '#ffebee', color: '#d32f2f' }}>Out of Stock</Badge>}
+
         <Title>{p.title}</Title>
         <Price>&pound;{p.price}</Price>
 
         <ActionRow>
-          <AddToCartBtn onClick={() => addProduct({ id: p.id, title: p.title, price: p.price, image: p.image })}>
+          <AddToCartBtn data-testid="add-to-cart" onClick={() => addProduct({ id: p.id, title: p.title, price: p.price, image: p.image })}>
             Add to Basket
           </AddToCartBtn>
-          <div style={{fontSize: '0.9rem', color: '#86868b'}}>Free Delivery Included</div>
+          <div style={{ fontSize: '0.9rem', color: '#86868b' }}>Free Delivery Included</div>
         </ActionRow>
 
         <SectionTitle>Specifications</SectionTitle>

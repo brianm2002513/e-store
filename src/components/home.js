@@ -53,7 +53,7 @@ const CTAButton = styled(Link)`
 const Home = () => {
   return (
     <HomeContainer>
-      <Title>Elevate Your<br/>Everyday.</Title>
+      <Title>Elevate Your<br />Everyday.</Title>
       <Subtitle>
         Discover our curated collection of premium appliances designed to blend seamlessly into your modern lifestyle.
       </Subtitle>

@@ -163,7 +163,7 @@ const Basket = () => {
         <CartHead>
           <h2>Shopping Bag</h2>
         </CartHead>
-        
+
         {cartItems.length > 0 ? (
           <CartItems>
             {cartItems.map((p) => (
@@ -172,11 +172,11 @@ const Basket = () => {
                   <Link to={`/products/${p.id}`}>{p.title}</Link>
                   <Price>&pound;{p.price}</Price>
                 </ItemInfo>
-                
+
                 <Controls>
-                  <DownIcon width={16} onClick={() => decreaseQuantity({ id: p.id })} />
-                  <span>{p.quantity}</span>
-                  <UpIcon width={16} onClick={() => increaseQuantity({ id: p.id })} />
+                  <DownIcon data-testid="down-icon" width={16} onClick={() => decreaseQuantity({ id: p.id })} />
+                  <span data-testid="quantity">{p.quantity}</span>
+                  <UpIcon data-testid="up-icon" width={16} onClick={() => increaseQuantity({ id: p.id })} />
                 </Controls>
 
                 <DeleteBtn onClick={() => removeProduct({ id: p.id })}>
@@ -205,8 +205,8 @@ const Basket = () => {
             <span>Total</span>
             <span>&pound;{total}</span>
           </SummaryTotal>
-          
-          <CheckoutBtn 
+
+          <CheckoutBtn
             disabled={cartItems.length === 0}
             onClick={() => navigate('/checkout')}
           >
