@@ -12,7 +12,6 @@ This project serves as a demonstration of production-ready React engineering:
 5.  **100% Coverage Testing Strategy**: The entire application is covered by **50+ Unit Tests** using **Jest** and **React Testing Library**, including mocks for routing, context, and external data fetching.
 
 ## 🧪 Testing Infrastructure
-Recruiters and Senior Engineers should note the professional testing patterns:
 *   **Context Mocking**: Custom test utilities (`renderWithCart`) to test components in isolation while providing global state.
 *   **Debounce Validation**: Uses **Jest Fake Timers** to verify search logic and timeout-based navigation.
 *   **Accessibility Testing**: Labels and inputs are programmatically associated (`htmlFor`/`id`) and validated using `getByLabelText`.
