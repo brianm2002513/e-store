@@ -1,5 +1,7 @@
 # E-Store | Modern E-Commerce Demonstration
 
+[![CI/CD Pipeline](https://github.com/brianm2002513/e-store/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/brianm2002513/e-store/actions/workflows/ci-cd.yml)
+
 A fully functional, professional-grade e-commerce frontend built to demonstrate state management, complex UI patterns, and **100% test coverage** for core business logic.
 
 ## 🧠 Engineering Highlights
@@ -17,12 +19,27 @@ This project serves as a demonstration of production-ready React engineering:
 *   **Accessibility Testing**: Labels and inputs are programmatically associated (`htmlFor`/`id`) and validated using `getByLabelText`.
 *   **Reducer Unit Tests**: Isolated logic testing for the `CartReducer` to ensure pure function reliability.
 
+## 🔄 CI/CD Pipeline
+
+Every pull request is automatically validated through a multi-stage pipeline before it can be merged:
+
+| Stage | Tool | Purpose |
+|-------|------|---------|
+| **Lint** | ESLint | Enforces code style and catches anti-patterns |
+| **Security** | CodeQL | Static analysis to detect vulnerabilities |
+| **Test** | Jest + RTL | Validates 50+ unit tests across all components |
+| **Build** | react-scripts | Produces optimized production bundle |
+| **Release** | GitHub Releases | Generates a tagged pre-release artifact |
+
+> All quality gates must pass before the build stage begins — broken or insecure code never reaches production.
+
 ## 🛠 Tech Stack
 
 - **Frontend**: React 19, Styled Components
 - **State**: Context API + useReducer
 - **Routing**: React Router 7
 - **Testing**: Jest, React Testing Library, User Event
+- **CI/CD**: GitHub Actions (Lint → Security → Test → Build → Release)
 - **Mock API**: JSON Server
 
 ## 🧪 Running Tests
