@@ -2,12 +2,20 @@
 
 A fully functional, professional-grade e-commerce frontend built to demonstrate state management, complex UI patterns, and **100% test coverage** for core business logic.
 
-## 🏆 Engineering Excellence
+## 🧠 Engineering Highlights
+This project serves as a demonstration of production-ready React engineering:
 
-- **Comprehensive Testing**: Features a suite of **51 unit tests** using Jest and React Testing Library.
-- **Bulletproof Logic**: 100% coverage on the `CartContext` and `Basket` logic, ensuring zero regressions in the checkout flow.
-- **Modern State Management**: Implements a clean **Context API + useReducer** architecture, separating business logic from UI components.
-- **Production Ready**: Configured for Vercel with strict linting rules to ensure high code quality in every deployment.
+1.  **Centralized State Architecture**: Uses the React **Context API + useReducer** pattern to manage complex cart logic (quantities, pricing, persistence) in a single source of truth, avoiding "prop drilling."
+2.  **Atomic Component Design**: Components are modular, reusable, and styled using **Styled Components**, allowing for consistent design tokens and high-fidelity UI polish.
+3.  **Robust Persistence Layer**: Implements synchronized `localStorage` persistence, ensuring the user's shopping session survives browser refreshes.
+4.  **Debounced Search Engine**: Features a custom-built search experience with **debounced input logic** to optimize performance and prevent unnecessary re-renders.
+5.  **100% Coverage Testing Strategy**: The entire application is covered by **50+ Unit Tests** using **Jest** and **React Testing Library**, including mocks for routing, context, and external data fetching.
+
+## 🧪 Testing Infrastructure
+*   **Context Mocking**: Custom test utilities (`renderWithCart`) to test components in isolation while providing global state.
+*   **Debounce Validation**: Uses **Jest Fake Timers** to verify search logic and timeout-based navigation.
+*   **Accessibility Testing**: Labels and inputs are programmatically associated (`htmlFor`/`id`) and validated using `getByLabelText`.
+*   **Reducer Unit Tests**: Isolated logic testing for the `CartReducer` to ensure pure function reliability.
 
 ## 🛠 Tech Stack
 
